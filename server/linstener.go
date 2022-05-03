@@ -13,6 +13,7 @@ func ListenerBuild() {
 	router.POST("/read.go", api.Read)
 	router.POST("/create.go", api.Create)
 	router.POST("/write.go", api.Write)
+	router.POST("/move.go", api.Move)
 	router.POST("/drop.go", api.Drop)
 	router.Run(":3000")
 }

@@ -2,6 +2,7 @@ package api
 
 import (
 	"bufio"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -10,9 +11,16 @@ import (
 )
 
 func Write(c *gin.Context) {
-	path := "./data/" + c.PostForm("FileName")
+	//path := "./data/" + c.PostForm("FileName")
+	id, _ := strconv.Atoi(c.PostForm("id"))
+	path, err := GetFileName(id)
+	if err != nil {
+		c.String(http.StatusBadRequest, err.Error())
+		log.Panic(err)
+		return
+	}
 	text := c.PostForm("Text")
-	_, err := os.Stat(path)
+	_, err = os.Stat(path)
 	if err != nil && os.IsNotExist(err) {
 		c.String(http.StatusBadRequest, "File is Not Exist")
 		return
@@ -30,6 +38,9 @@ func Write(c *gin.Context) {
 		return
 	}
 	count := WordCount(&text)
+	if err := UpdateCount(id, count); err != nil {
+		c.String(http.StatusServiceUnavailable, err.Error())
+		return
+	}
 	c.String(http.StatusOK, strconv.Itoa(count))
-	UpdateCount(c.PostForm("FileName"), count)
 }
