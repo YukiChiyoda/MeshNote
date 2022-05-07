@@ -8,8 +8,8 @@ import (
 
 func ListenerBuild() {
 	router := gin.Default()
-	router.GET("/", api.Root)
-	router.GET("/query.go", api.Query)
+	router.POST("/", api.Root)
+	router.POST("/query.go", api.Query)
 	router.POST("/read.go", api.Read)
 	router.POST("/write.go", api.Write)
 	router.POST("/create.go", api.Create)

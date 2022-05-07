@@ -1,0 +1,5 @@
+package fos
+
+func UpdateErrorLog() {
+
+}
