@@ -1,0 +1,5 @@
+package fos
+
+func WriteFile() {
+
+}
