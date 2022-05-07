@@ -24,11 +24,11 @@ type Log struct {
 }
 
 const (
-	Id_Undefine       = 0
-	Type_File         = 0
-	Type_Recyled_File = -1
-	Type_Dir          = 1
-	FileName_Dir      = "<dir>"
-	FileSize_Empty    = 0
-	Parent_Root       = 0
+	ID_UNDEFINE       = 0
+	TYPE_FILE         = 0
+	TYPE_RECYLED_FILE = -1
+	TYPE_DIR          = 1
+	FILENAME_DIR      = "<dir>"
+	FILESIZE_EMPTY    = 0
+	PARENT_ROOT       = 0
 )

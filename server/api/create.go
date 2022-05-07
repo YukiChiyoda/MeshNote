@@ -1,6 +1,7 @@
 package api
 
 import (
+	"MeshNote/server/api/catch"
 	"MeshNote/server/api/para"
 	"MeshNote/server/db"
 	"MeshNote/server/fos"
@@ -15,54 +16,47 @@ import (
 func Create(c *gin.Context) {
 	var data db.Tree
 	if temp, err := para.GetString("name", c); err != nil {
-		handleError(err)
-		c.String(http.StatusBadRequest, err.Error())
+		catch.HandleRequestError(c, err)
 		return
 	} else {
 		data.Name = temp
 	}
 	if temp, err := para.GetInt("type", c); err != nil {
-		handleError(err)
-		c.String(http.StatusBadRequest, err.Error())
+		catch.HandleRequestError(c, err)
 		return
 	} else {
 		data.Type = temp
 	}
 	if temp, err := para.GetInt("parent", c); err != nil {
-		handleError(err)
-		c.String(http.StatusBadRequest, err.Error())
+		catch.HandleRequestError(c, err)
 		return
 	} else {
 		data.Parent = temp
 	}
 	if temp, err := db.GetElementType(data.Parent); err != nil {
-		handleError(err)
-		c.String(http.StatusBadRequest, err.Error())
+		catch.HandleRequestError(c, err)
 		return
-	} else if temp != db.Type_Dir {
+	} else if temp != db.TYPE_DIR {
 		err = errors.New("create: parent is not a directory")
-		handleError(err)
-		c.String(http.StatusBadRequest, err.Error())
+		catch.HandleRequestError(c, err)
 		return
 	}
 	timeStemp := strconv.FormatInt(time.Now().UnixMicro(), 10)
 	data.Uptime = timeStemp
-	if data.Type == db.Type_File || data.Type == db.Type_Recyled_File {
+	if data.Type == db.TYPE_FILE || data.Type == db.TYPE_RECYLED_FILE {
 		data.FileName = timeStemp + ".md"
 	} else {
-		data.FileName = db.FileName_Dir
+		data.FileName = db.FILENAME_DIR
 	}
-	data.Id = db.Id_Undefine
-	data.FileSize = db.FileSize_Empty
+	data.Id = db.ID_UNDEFINE
+	data.FileSize = db.FILESIZE_EMPTY
 	if err := db.CreateElement(data); err != nil {
-		handleError(err)
-		c.String(http.StatusInternalServerError, err.Error())
+		catch.HandleServerError(c, err)
 		return
 	}
-	if data.Type == db.Type_File || data.Type == db.Type_Recyled_File {
+	if data.Type == db.TYPE_FILE || data.Type == db.TYPE_RECYLED_FILE {
 		if err := fos.WriteFile(data.FileName, nil); err != nil {
-			handleError(err)
-			c.String(http.StatusInternalServerError, err.Error())
+			catch.HandleServerError(c, err)
 			return
 		}
 	}

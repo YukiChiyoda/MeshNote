@@ -22,8 +22,8 @@ func init() {
 }
 
 func GetElementType(id int) (int, error) {
-	if id == Parent_Root {
-		return Type_Dir, nil
+	if id == PARENT_ROOT {
+		return TYPE_DIR, nil
 	}
 	res, err := db.Preparex("SELECT `type` FROM `tree` WHERE `id` = ?")
 	if err != nil {
@@ -68,10 +68,10 @@ func CreateElement(data Tree) error {
 	if err != nil {
 		return err
 	}
-	if data.Type == Type_File || data.Type == Type_Recyled_File {
+	if data.Type == TYPE_FILE || data.Type == TYPE_RECYLED_FILE {
 		_, err = res.Exec(data.Name, data.Type, data.FileName, data.FileSize, data.Parent, data.Uptime)
 	} else {
-		_, err = res.Exec(data.Name, data.Type, FileName_Dir, data.FileSize, data.Parent, data.Uptime)
+		_, err = res.Exec(data.Name, data.Type, FILENAME_DIR, data.FileSize, data.Parent, data.Uptime)
 	}
 	if err != nil {
 		return err
