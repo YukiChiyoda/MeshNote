@@ -22,3 +22,13 @@ type Log struct {
 	Event  string `json:"Event" db:"event"`
 	Detail string `json:"Detail" db:"detail"`
 }
+
+const (
+	Id_Undefine       = 0
+	Type_File         = 0
+	Type_Recyled_File = -1
+	Type_Dir          = 1
+	FileName_Dir      = "<dir>"
+	FileSize_Empty    = 0
+	Parent_Root       = 0
+)

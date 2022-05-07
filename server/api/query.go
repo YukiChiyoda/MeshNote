@@ -23,26 +23,26 @@ func handleError(err error) {
 }
 
 func Query(c *gin.Context) {
-	p, err := para.GetInt("p", c)
+	parent, err := para.GetInt("parent", c)
 	if err != nil {
 		handleError(err)
 		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
-
-	// if p == 0 { db.QueryAllFile() }
-	var t QueryJson
-	t.Data, err = db.QueryFile(p)
+	// log.Println(parent)
+	// if parent == 0 { db.QueryAllFile() }
+	var jsonData QueryJson
+	jsonData.Data, err = db.QueryElement(parent)
 	if err != nil {
 		handleError(err)
 		c.String(http.StatusInternalServerError, err.Error())
 		return
 	}
-	s, err := json.Marshal(t)
+	jsonText, err := json.Marshal(jsonData)
 	if err != nil {
 		handleError(err)
 		c.String(http.StatusInternalServerError, err.Error())
 		return
 	}
-	c.String(http.StatusOK, string(s))
+	c.String(http.StatusOK, string(jsonText))
 }
