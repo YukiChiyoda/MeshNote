@@ -26,5 +26,3 @@ CREATE TABLE IF NOT EXISTS `log`(
    `detail` VARCHAR(65535) NOT NULL,
    PRIMARY KEY(`id`)
 )ENGINE = InnoDB DEFAULT CHARSET = utf8;
-
-INSERT INTO `tree` (`id`, `name`, `type`, `filename`, `filesize`, `parent`, `uptime`) VALUES (NULL, ?, ?, ?, ?, ?, ?);
