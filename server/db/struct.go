@@ -31,4 +31,8 @@ const (
 	FILENAME_DIR      = "<dir>"
 	FILESIZE_EMPTY    = 0
 	PARENT_ROOT       = 0
+
+	SPECIAL_INVALID_ID = -888
+	SPECIAL_ERROR_ID   = -999
+	SPECIAL_NULL_NAME  = "null"
 )

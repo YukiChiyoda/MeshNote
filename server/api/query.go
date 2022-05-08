@@ -15,7 +15,7 @@ type QueryJson struct {
 }
 
 func Query(c *gin.Context) {
-	temp, err := para.GetInt("parent", c)
+	target, err := para.GetInt("parent", c)
 	if err != nil {
 		catch.HandleRequestError(c, err)
 		return
@@ -23,7 +23,7 @@ func Query(c *gin.Context) {
 	// log.Println(parent)
 	// if parent == 0 { db.QueryAllFile() }
 	var jsonData QueryJson
-	jsonData.Data, err = db.QueryElement(temp)
+	jsonData.Data, err = db.QueryElement(target)
 	if err != nil {
 		catch.HandleServerError(c, err)
 		return

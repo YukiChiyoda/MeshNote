@@ -22,7 +22,7 @@ func Move(c *gin.Context) {
 		return
 	}
 	targetType, err := db.GetElementType(targetParent)
-	if targetType == -888 {
+	if targetType == db.SPECIAL_INVALID_ID {
 		catch.HandleRequestError(c, err)
 		return
 	} else if err != nil {

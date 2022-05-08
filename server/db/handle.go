@@ -27,16 +27,16 @@ func GetElementType(id int) (int, error) {
 		return TYPE_DIR, nil
 	}
 	if id < PARENT_ROOT {
-		return -888, errors.New("db: invalid id")
+		return SPECIAL_INVALID_ID, errors.New("db: invalid id")
 	}
 	res, err := db.Preparex("SELECT `type` FROM `tree` WHERE `id` = ?")
 	if err != nil {
-		return -999, err
+		return SPECIAL_ERROR_ID, err
 	}
 	var temp int
 	err = res.Get(&temp, id)
 	if err != nil {
-		return -999, err
+		return SPECIAL_ERROR_ID, err
 	}
 	return temp, nil
 }
@@ -44,12 +44,12 @@ func GetElementType(id int) (int, error) {
 func GetElementFileName(id int) (string, error) {
 	res, err := db.Preparex("SELECT `filename` FROM `tree` WHERE `id` = ?")
 	if err != nil {
-		return "null", err
+		return SPECIAL_NULL_NAME, err
 	}
 	var temp string
 	err = res.Get(&temp, id)
 	if err != nil {
-		return "null", err
+		return SPECIAL_NULL_NAME, err
 	}
 	return temp, nil
 }

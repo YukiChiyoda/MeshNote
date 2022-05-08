@@ -11,17 +11,17 @@ import (
 )
 
 func Delete(c *gin.Context) {
-	id, err := para.GetInt("id", c)
+	targetId, err := para.GetInt("id", c)
 	if err != nil {
 		catch.HandleRequestError(c, err)
 		return
 	}
-	fileName, err := db.GetElementFileName(id)
+	fileName, err := db.GetElementFileName(targetId)
 	if err != nil {
 		catch.HandleServerError(c, err)
 		return
 	}
-	fileType, err := db.GetElementType(id)
+	fileType, err := db.GetElementType(targetId)
 	if err != nil {
 		catch.HandleServerError(c, err)
 		return
@@ -32,7 +32,7 @@ func Delete(c *gin.Context) {
 			return
 		}
 	}
-	if err := db.DeleteElement(id); err != nil {
+	if err := db.DeleteElement(targetId); err != nil {
 		catch.HandleServerError(c, err)
 		return
 	}
