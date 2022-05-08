@@ -5,8 +5,8 @@ import (
 	"os"
 )
 
-func WriteFile(FileName string, text *string) error {
-	path := "./data/" + FileName
+func WriteFile(fileName string, text *string) error {
+	path := "./data/" + fileName
 	file, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0666)
 	if err != nil {
 		return err
