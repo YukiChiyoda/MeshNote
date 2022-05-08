@@ -9,12 +9,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetInt(ParaName string, GinContext *gin.Context) (int, error) {
-	t := GinContext.PostForm(ParaName)
+func GetInt(paraName string, GinContext *gin.Context) (int, error) {
+	t := GinContext.PostForm(paraName)
 	if t != "" {
 		return strconv.Atoi(t)
 	} else {
-		return 0, fmt.Errorf("para: lost parameter `%s`", ParaName)
+		return 0, fmt.Errorf("para: lost parameter `%s`", paraName)
 	}
 }
 
@@ -24,11 +24,11 @@ func GetIntCanBeEmpty(ParaName string, GinContext *gin.Context) (int, error) {
 }
 */
 
-func GetString(ParaName string, GinContext *gin.Context) (string, error) {
-	t := GinContext.PostForm(ParaName)
+func GetString(paraName string, GinContext *gin.Context) (string, error) {
+	t := GinContext.PostForm(paraName)
 	if t != "" {
 		return t, nil
 	} else {
-		return "", fmt.Errorf("para: lost parameter[%s]", ParaName)
+		return "", fmt.Errorf("para: lost parameter[%s]", paraName)
 	}
 }

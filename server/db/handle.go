@@ -26,6 +26,9 @@ func GetElementType(id int) (int, error) {
 	if id == PARENT_ROOT {
 		return TYPE_DIR, nil
 	}
+	if id < PARENT_ROOT {
+		return -888, errors.New("db: invalid id")
+	}
 	res, err := db.Preparex("SELECT `type` FROM `tree` WHERE `id` = ?")
 	if err != nil {
 		return -999, err
@@ -90,6 +93,18 @@ func CreateElement(data Tree) error {
 	} else {
 		_, err = res.Exec(data.Name, data.Type, FILENAME_DIR, data.FileSize, data.Parent, data.Uptime)
 	}
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func MoveElement(id int, target int) error {
+	res, err := db.Preparex("UPDATE `tree` SET `parent` = ? WHERE `id` = ?")
+	if err != nil {
+		return err
+	}
+	_, err = res.Exec(target, id)
 	if err != nil {
 		return err
 	}
