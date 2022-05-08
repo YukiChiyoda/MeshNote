@@ -2,6 +2,7 @@
 package db
 
 import (
+	"errors"
 	"log"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -50,6 +51,22 @@ func GetElementFileName(id int) (string, error) {
 	return temp, nil
 }
 
+func GetElementParent(id int) (int, error) {
+	if id == PARENT_ROOT {
+		return TYPE_DIR, nil
+	}
+	res, err := db.Preparex("SELECT `parent` FROM `tree` WHERE `id` = ?")
+	if err != nil {
+		return -999, err
+	}
+	var temp int
+	err = res.Get(&temp, id)
+	if err != nil {
+		return -999, err
+	}
+	return temp, nil
+}
+
 func QueryElement(parent int) ([]Tree, error) {
 	res, err := db.Preparex("SELECT * FROM `tree` WHERE `parent` = ?")
 	if err != nil {
@@ -77,4 +94,62 @@ func CreateElement(data Tree) error {
 		return err
 	}
 	return nil
+}
+
+func DeleteElement(id int) error {
+	fileType, err := GetElementType(id)
+	if err != nil {
+		return err
+	}
+	switch fileType {
+	case TYPE_FILE:
+		res, err := db.Preparex("UPDATE `tree` SET `type` = ? WHERE `id` = ?")
+		if err != nil {
+			return err
+		}
+		_, err = res.Exec(TYPE_RECYLED_FILE, id)
+		if err != nil {
+			return err
+		}
+		return nil
+	case TYPE_RECYLED_FILE:
+		return errors.New("delete: this file has already been recycled")
+	case TYPE_DIR:
+		sql, err := db.Beginx()
+		if err != nil {
+			return err
+		}
+		res, err := sql.Preparex("UPDATE `tree` SET `parent` = ? WHERE `parent` = ?")
+		if err != nil {
+			sql.Rollback()
+			return err
+		}
+		newParent, err := GetElementParent(id)
+		if err != nil {
+			sql.Rollback()
+			return err
+		}
+		_, err = res.Exec(newParent, id)
+		if err != nil {
+			sql.Rollback()
+			return err
+		}
+		res, err = sql.Preparex("DELETE FROM `tree` WHERE `id` = ?")
+		if err != nil {
+			sql.Rollback()
+			return err
+		}
+		_, err = res.Exec(id)
+		if err != nil {
+			sql.Rollback()
+			return err
+		}
+		err = sql.Commit()
+		if err != nil {
+			sql.Rollback()
+			return err
+		}
+		return nil
+	}
+	return errors.New("delete: type undefined error")
 }
