@@ -11,7 +11,7 @@ import (
 func HandleRequestError(ginContext *gin.Context, err error) {
 	if err != nil {
 		log.Println(err.Error())
-		fos.UpdateErrorLog()
+		fos.UpdateErrorLog(err)
 		ginContext.String(http.StatusBadRequest, err.Error())
 	}
 }
@@ -19,7 +19,7 @@ func HandleRequestError(ginContext *gin.Context, err error) {
 func HandleServerError(ginContext *gin.Context, err error) {
 	if err != nil {
 		log.Println(err.Error())
-		fos.UpdateErrorLog()
+		fos.UpdateErrorLog(err)
 		ginContext.String(http.StatusInternalServerError, err.Error())
 	}
 }
