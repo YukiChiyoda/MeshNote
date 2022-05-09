@@ -10,7 +10,7 @@ func ReadFile(fileName string) (string, error) {
 	path := "./data/" + fileName
 	file, err := os.Open(path)
 	if err != nil {
-		log.Panic(err)
+		return "", err
 	}
 	defer file.Close()
 	var temp string
