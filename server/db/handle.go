@@ -168,3 +168,15 @@ func DeleteElement(id int) error {
 	}
 	return errors.New("delete: type undefined error")
 }
+
+func UpdateWordCount(id int, count int) error {
+	res, err := db.Preparex("UPDATE `tree` SET `filesize` = ? WHERE `id` = ?")
+	if err != nil {
+		return err
+	}
+	_, err = res.Exec(count, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}

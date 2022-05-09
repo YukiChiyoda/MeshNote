@@ -40,5 +40,9 @@ func Write(c *gin.Context) {
 		catch.HandleServerError(c, err)
 		return
 	}
+	if err := db.UpdateWordCount(targetId, fos.WordCount(&targetText)); err != nil {
+		catch.HandleServerError(c, err)
+		return
+	}
 	c.String(http.StatusOK, "Successful!")
 }
