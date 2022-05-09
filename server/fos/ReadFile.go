@@ -2,7 +2,6 @@ package fos
 
 import (
 	"io"
-	"log"
 	"os"
 )
 
