@@ -14,6 +14,7 @@ func UpdateErrorLog(errorMsg error) {
 		log.Panicln(err.Error())
 		return
 	}
+	defer file.Close()
 	_, err = file.WriteString(temp)
 	if err != nil {
 		log.Panicln(err.Error())

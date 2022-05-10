@@ -15,5 +15,7 @@ func ListenerBuild() {
 	router.POST("/create.go", api.Create)
 	router.POST("/delete.go", api.Delete)
 	router.POST("/move.go", api.Move)
+	router.POST("/user/update.go", api.UserUpdate)
+	router.POST("/user/query.go", api.UserQuery)
 	router.Run(":3000")
 }

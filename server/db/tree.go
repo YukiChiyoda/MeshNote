@@ -3,24 +3,9 @@ package db
 
 import (
 	"errors"
-	"log"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/jmoiron/sqlx"
 )
-
-var db *sqlx.DB
-
-func init() {
-	var err error
-	db, err = sqlx.Connect("mysql", "mesh:mesh@tcp(localhost:3306)/meshnote")
-	if err != nil {
-		log.Panicln(err)
-	}
-	// defer db.Close() [Warning: This will cause `sql: database is closed`!]
-	db.SetMaxOpenConns(10)
-	db.SetMaxOpenConns(10)
-}
 
 func GetElementType(id int) (int, error) {
 	if id == PARENT_ROOT {
@@ -60,12 +45,12 @@ func GetElementParent(id int) (int, error) {
 	}
 	res, err := db.Preparex("SELECT `parent` FROM `tree` WHERE `id` = ?")
 	if err != nil {
-		return -999, err
+		return SPECIAL_ERROR_ID, err
 	}
 	var temp int
 	err = res.Get(&temp, id)
 	if err != nil {
-		return -999, err
+		return SPECIAL_ERROR_ID, err
 	}
 	return temp, nil
 }
