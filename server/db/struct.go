@@ -16,11 +16,13 @@ type Tree struct {
 	Uptime   string `json:"Uptime" db:"uptime"` // MicroUnix
 }
 
-type Log struct {
+type Diary struct {
 	Id     int    `json:"Id" db:"id"`
-	User   string `json:"User" db:"user"`
-	Event  string `json:"Event" db:"event"`
-	Detail string `json:"Detail" db:"detail"`
+	User   int `json:"User" db:"user"`
+	Year  int `json:"Year" db:"year"`
+	Month  int `json:"Month" db:"month"`
+	Day  int `json:"Day" db:"day"`
+	Count  int `json:"Count" db:"count"`
 }
 
 const (

@@ -11,10 +11,12 @@ import (
 )
 
 func UserQuery(c *gin.Context) {
-	targetUser := db.DEV_USER_ID
+	var data db.Diary
+	var err error
+	data.User = db.DEV_USER_ID
 	/*
 		[DEV USER]
-		targetUser, err := para.GetInt("user", c)
+		data.User, err := para.GetInt("user", c)
 		if err != nil {
 			catch.HandleRequestError(c, err)
 			return
@@ -22,22 +24,22 @@ func UserQuery(c *gin.Context) {
 		db.IfUserExist()
 		...
 	*/
-	targetYear, err := para.GetInt("year", c)
+	data.Year, err = para.GetInt("year", c)
 	if err != nil {
 		catch.HandleRequestError(c, err)
 		return
 	}
-	targetMonth, err := para.GetInt("month", c)
+	data.Month, err = para.GetInt("month", c)
 	if err != nil {
 		catch.HandleRequestError(c, err)
 		return
 	}
-	targetDay, err := para.GetInt("day", c)
+	data.Day, err = para.GetInt("day", c)
 	if err != nil {
 		catch.HandleRequestError(c, err)
 		return
 	}
-	temp, err := db.QueryDiary(targetUser, targetYear, targetMonth, targetDay)
+	temp, err := db.QueryDiary(data)
 	if err != nil {
 		catch.HandleServerError(c, err)
 		return

@@ -4,28 +4,28 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func QueryDiary(user int, year int, month int, day int) (int, error) {
+func QueryDiary(data Diary) (int, error) {
 	res, err := db.Preparex("SELECT `count` FROM `diary` WHERE `user` = ? AND `year` = ? AND `month` = ? AND `day` = ? LIMIT 1")
 	if err != nil {
 		return SPECIAL_ERROR_ID, err
 	}
 	temp := DIARY_EMPTY
-	res.Get(&temp, user, year, month, day) // No row will return 0 conut
+	res.Get(&temp, data.User, data.Year, data.Month, data.Day) // No row will return 0 conut
 	return temp, nil
 }
 
-func UpdateDiary(user int, year int, month int, day int, count int) error {
-	temp, err := QueryDiary(user, year, month, day)
+func UpdateDiary(data Diary) error {
+	temp, err := QueryDiary(data)
 	if err != nil {
 		return err
 	}
-	count += temp
+	data.Count += temp
 	if temp == DIARY_EMPTY {
 		res, err := db.Preparex("INSERT INTO `diary` (`id`, `user`, `year`, `month`, `day`, `count`) VALUES (NULL, ?, ?, ?, ?, ?)")
 		if err != nil {
 			return err
 		}
-		_, err = res.Exec(user, year, month, day, count)
+		_, err = res.Exec(data.User, data.Year, data.Month, data.Day, data.Count)
 		if err != nil {
 			return err
 		}
@@ -34,7 +34,7 @@ func UpdateDiary(user int, year int, month int, day int, count int) error {
 		if err != nil {
 			return err
 		}
-		_, err = res.Exec(count, user, year, month, day)
+		_, err = res.Exec(data.Count, data.User, data.Year, data.Month, data.Day)
 		if err != nil {
 			return err
 		}

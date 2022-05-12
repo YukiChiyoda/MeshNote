@@ -12,10 +12,12 @@ import (
 )
 
 func UserUpdate(c *gin.Context) {
-	targetUser := db.DEV_USER_ID
+	var data db.Diary
+	var err error
+	data.User = db.DEV_USER_ID
 	/*
 		[DEV USER]
-		targetUser, err := para.GetInt("user", c)
+		data.User, err := para.GetInt("user", c)
 		if err != nil {
 			catch.HandleRequestError(c, err)
 			return
@@ -23,15 +25,15 @@ func UserUpdate(c *gin.Context) {
 		db.IfUserExist()
 		...
 	*/
-	targetCount, err := para.GetInt("count", c)
+	data.Count, err = para.GetInt("count", c)
 	if err != nil {
 		catch.HandleRequestError(c, err)
 		return
 	}
-	targetYear, _ := strconv.Atoi(time.Now().Format("2006"))
-	targetMonth, _ := strconv.Atoi(time.Now().Format("01"))
-	targetDay, _ := strconv.Atoi(time.Now().Format("02"))
-	if err := db.UpdateDiary(targetUser, targetYear, targetMonth, targetDay, targetCount); err != nil {
+	data.Year, _ = strconv.Atoi(time.Now().Format("2006"))
+	data.Month, _ = strconv.Atoi(time.Now().Format("01"))
+	data.Day, _ = strconv.Atoi(time.Now().Format("02"))
+	if err := db.UpdateDiary(data); err != nil {
 		catch.HandleServerError(c, err)
 		return
 	}
