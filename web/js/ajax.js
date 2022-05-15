@@ -27,6 +27,9 @@ function getElement(parent, depth) {
                 }
                 title += "[" + data[i].Id + "]";
                 title += data[i].Name;
+                if (data[i].Type == TYPE_FILE) {
+                    title += "<count=" + data[i].FileSize + ">";
+                }
                 appendCard(data[i].Id, title)
                 if (data[i].Type == TYPE_DIR) {
                     getElement(data[i].Id, depth + 1)
