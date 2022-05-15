@@ -2,7 +2,6 @@ package main
 
 import (
 	"MeshNote/server/api"
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -19,7 +18,7 @@ func Cores() gin.HandlerFunc {
 		}
 		headerStr := strings.Join(headerKeys, ", ")
 		if headerStr != "" {
-			headerStr = fmt.Sprintf("access-control-allow-origin, access-control-allow-headers, " + headerStr)
+			headerStr = "access-control-allow-origin, access-control-allow-headers, " + headerStr
 		} else {
 			headerStr = "access-control-allow-origin, access-control-allow-headers"
 		}
