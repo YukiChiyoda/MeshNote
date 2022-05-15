@@ -1,0 +1,99 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: -webkit-flex;
+    display: flex;
+    justify-content: center;
+    /* background-image: url(./img/pattern.png); */
+    background-color: #f0c9cf;
+    overflow: hidden;
+}
+
+textarea {
+    border: none;
+    outline: none;
+    resize: none;
+}
+
+.app {
+    display: -webkit-flex;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 60%;
+    max-width: 80%;
+    height: 100vh;
+}
+
+.header {
+    flex: 0 0 100px;
+    width: 100%;
+    background-color: #a7535a;
+}
+
+.main {
+    display: flex;
+    flex: 1;
+    width: 100%;
+}
+
+.main .tree {
+    display: flex;
+    flex: 0 0 25%;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    padding: 10px;
+    background-color: #eea2a4;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.main .tree .card {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex: 0 0 3%;
+    margin: 5px;
+    width: 100%;
+    background-color: #4c1f24;
+    color: #eea2a4;
+    font-size: 1.5rem;
+}
+
+.main .bar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.main .bar .top {
+    flex: 0 0 5%;
+    background-color: #eea2a4;
+}
+
+.main .bar .editor {
+    flex: 1;
+    background-color: #4c1f24;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding: 10px;
+    color: #eea2a4;
+    font-size: 2rem;
+}
+
+.main .bar .bottom {
+    flex: 0 0 5%;
+    background-color: #eea2a4;
+}
+
+.footer {
+    flex: 0 0 100px;
+    width: 100%;
+    background-color: #a7535a;
+}
