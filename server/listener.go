@@ -51,5 +51,5 @@ func ListenerBuild() {
 	router.POST("/move.go", api.Move)
 	router.POST("/user/update.go", api.UserUpdate)
 	router.POST("/user/query.go", api.UserQuery)
-	router.Run(":3000")
+	router.Run(":3001")
 }
