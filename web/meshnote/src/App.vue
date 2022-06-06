@@ -1,6 +1,6 @@
 <script setup>
 
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch, watchEffect } from 'vue';
 import axios from 'axios';
 
 const editorText = ref("Test");
@@ -11,17 +11,24 @@ function saveChange(){
     window.alert("Submit: " + editorText.value);
 }
 
+const treeData = {};
 const hostPath = "http://localhost:3001";
 const getTreeData = onMounted(() => {
     axios
         .post(hostPath + "/query.go", {
             parent: 0
+        }, {
+            headers: {
+                "Content-type": "multipart/form-data"
+            }
         })
-        .then(res => (treeData = JSON.parse(res)))
+        .then(res => (treeData.Data = JSON.stringify(res.data.Data)))
+        // .then(res => (console.info(res.data.Data)))
         .catch(err => (console.error(err)));
 })
-
-const treeData = ref()
+watchEffect(() => {
+    console.info(treeData)
+})
 
 const selectIcon = computed(() => {
     const iconPath = "/icon/";
@@ -36,16 +43,17 @@ const selectIcon = computed(() => {
         <div class="header"></div>
         <div class="main">
             <div id="tree" class="tree">
-                <div class="card">
-                    <img class="icon" :src="selectIcon">
-                    <div class="title">MeshNote</div>
-                    <div class="counter">0</div>
+                <div class="card" v-for="(icon, title, counter, index) in treeData.Data" :key="index">
+                    <img class="icon" :src="icon">
+                    <div class="title">{{ title }}</div>
+                    <div class="counter">{{ counter }}</div>
                 </div>
             </div>
             <div class="bar">
                 <div class="top"></div>
                 <textarea id="editor" class="editor" wrap="physical" v-model="editorText"></textarea>
                 <div class="bottom">
+                    <button @click="getTreeData">Refresh</button>
                     <button @click="saveChange">Save</button>
                 </div>
             </div>
